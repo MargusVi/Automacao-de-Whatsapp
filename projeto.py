@@ -42,24 +42,42 @@ time.sleep(1)
 nav.find_element('xpath', '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
 time.sleep(2)
 
-# Encaminhar a mensagem para a minha lista de contatos
-lista_elementos = nav.find_elements('class name', '_2AOIt')
-for item in lista_elementos:
-    mensagem = mensagem.replace("\n", "")
-    texto = item.text.replace("\n", "")
-    if mensagem in texto:
-        elemento = item
-        break
+qtde_contatos = len(lista_contatos) # Pega o tamanho da lista de contatos
 
-ActionChains(nav).move_to_element(elemento).perform()
-elemento.find_element('class name', '_3u9t-').click() # Clicar na setinha da mensagem
-time.sleep(1)
-nav.find_element('xpath', '//*[@id="app"]/div/span[5]/div/ul/div/li[4]/div').click() # Clicar no encaminhar
-time.sleep(1)
-nav.find_element('xpath', '//*[@id="main"]/span[2]/div/button[4]/span').click() # Clicar no botão encaminhar
-time.sleep(1)
-nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys("Alan") # Escrever "Alan" na barra de pesquisa
-time.sleep(1)
-nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
-time.sleep(1)
-nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/span/div/div/div/span').click() # Clicar no botão de enviar
+if qtde_contatos % 5 == 0:
+    qtde_blocos = qtde_contatos / 5 # Se a lista tiver um tamanho múltiplo de 5, então haverá um número fechado de blocos
+else:
+    qtde_blocos = int(qtde_contatos / 5) + 1 # Se não, aumenta a quantidade de blocos em 1
+
+for i in range(qtde_blocos): # Encaminha as mensagens para cada um dos blocos criados
+    i_inicial = i * 5 # Pega o primeiro item do bloco atual
+    i_final = (i + 1) * 5 # Pega o último item do bloco atual
+    lista_enviar = lista_contatos[i_inicial:i_final] # Armazena os contatos dentro do bloco atual
+
+    # Encontra a mensagem que foi enviada
+    lista_elementos = nav.find_elements('class name', '_2AOIt')
+    for item in lista_elementos:
+        mensagem = mensagem.replace("\n", "")
+        texto = item.text.replace("\n", "")
+        if mensagem in texto:
+            elemento = item
+            break
+
+    ActionChains(nav).move_to_element(elemento).perform() # Coloca o mouse sobre a mensagem
+    elemento.find_element('class name', '_3u9t-').click() # Clicar na setinha da mensagem
+    time.sleep(1)
+    nav.find_element('xpath', '//*[@id="app"]/div/span[5]/div/ul/div/li[4]/div').click() # Clicar no encaminhar
+    time.sleep(1)
+    nav.find_element('xpath', '//*[@id="main"]/span[2]/div/button[4]/span').click() # Clicar no botão encaminhar
+    time.sleep(1)
+
+    for nome in lista_enviar: # Encaminha a mensagem para todos os contatos do bloco atual
+        nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(nome) # Escrever o próximo nome da lista definida na barra de pesquisa
+        time.sleep(1)
+        nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
+        time.sleep(1)
+        nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(Keys.BACKSPACE) # Limpar a barra de pesquisa
+        time.sleep(1)
+    
+    nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/span/div/div/div/span').click() # Clicar no botão de enviar
+    time.sleep(3)
