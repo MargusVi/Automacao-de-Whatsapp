@@ -31,12 +31,14 @@ lista_contatos = ["Marcos", "Alan Olinto", "Arteeeeeees", "Trabalho de artes", "
 # Enviar a mensagem para meu número
 
 nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div[2]/button/div[2]/span').click() # Clicar na lupa
+time.sleep(1)
 nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys("Marcos") # Escrever "Marcos"
+time.sleep(1)
 nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
 time.sleep(1)
-
 pyperclip.copy(mensagem) # Copiar a mensagem usando o pyperclip
 nav.find_element('xpath', '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p').send_keys(Keys.CONTROL + 'v') # Colar a mensagem copiada no navegador
+time.sleep(1)
 nav.find_element('xpath', '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
 time.sleep(2)
 
@@ -50,13 +52,14 @@ for item in lista_elementos:
         break
 
 ActionChains(nav).move_to_element(elemento).perform()
-elemento.find_element('class name', '_3u9t-').click()
-nav.find_element('xpath', '//*[@id="app"]/div/span[5]/div/ul/div/li[4]/div').click()
-time.sleep(2)
-nav.find_element('xpath', '//*[@id="main"]/span[2]/div/button[4]/span').click()
-time.sleep(2)
-nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys("Alan")
-time.sleep(2)
-nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(Keys.ENTER)
-time.sleep(2)
-nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/span/div/div/div/span').click()
+elemento.find_element('class name', '_3u9t-').click() # Clicar na setinha da mensagem
+time.sleep(1)
+nav.find_element('xpath', '//*[@id="app"]/div/span[5]/div/ul/div/li[4]/div').click() # Clicar no encaminhar
+time.sleep(1)
+nav.find_element('xpath', '//*[@id="main"]/span[2]/div/button[4]/span').click() # Clicar no botão encaminhar
+time.sleep(1)
+nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys("Alan") # Escrever "Alan" na barra de pesquisa
+time.sleep(1)
+nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
+time.sleep(1)
+nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/span/div/div/div/span').click() # Clicar no botão de enviar
