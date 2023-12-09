@@ -14,6 +14,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 from selenium.webdriver.common.keys import Keys
 import pyperclip
+from selenium.webdriver.common.action_chains import ActionChains
 
 options = webdriver.ChromeOptions()
 options.add_experimental_option('detach', True) # Usado para impedir que o navegador feche após carregar o Whatsapp
@@ -21,7 +22,7 @@ service = Service(ChromeDriverManager().install())
 nav = webdriver.Chrome(options=options, service=service)
 nav.get("https://web.whatsapp.com") # Abrir o Whatsapp no navegador
 
-time.sleep(40) # Esperar 2 minutos antes de começar a executar o restante do código
+time.sleep(20) # Esperar 2 minutos antes de começar a executar o restante do código
 
 mensagem = """Teste, teste, teste, teste, teste! Isso é um teste de mensagens automáticas! Não se assuste!"""
 
@@ -32,9 +33,30 @@ lista_contatos = ["Marcos", "Alan Olinto", "Arteeeeeees", "Trabalho de artes", "
 nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div[2]/button/div[2]/span').click() # Clicar na lupa
 nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys("Marcos") # Escrever "Marcos"
 nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
+time.sleep(1)
+
 pyperclip.copy(mensagem) # Copiar a mensagem usando o pyperclip
 nav.find_element('xpath', '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p').send_keys(Keys.CONTROL + 'v') # Colar a mensagem copiada no navegador
 nav.find_element('xpath', '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
-
+time.sleep(2)
 
 # Encaminhar a mensagem para a minha lista de contatos
+lista_elementos = nav.find_elements('class name', '_2AOIt')
+for item in lista_elementos:
+    mensagem = mensagem.replace("\n", "")
+    texto = item.text.replace("\n", "")
+    if mensagem in texto:
+        elemento = item
+        break
+
+ActionChains(nav).move_to_element(elemento).perform()
+elemento.find_element('class name', '_3u9t-').click()
+nav.find_element('xpath', '//*[@id="app"]/div/span[5]/div/ul/div/li[4]/div').click()
+time.sleep(2)
+nav.find_element('xpath', '//*[@id="main"]/span[2]/div/button[4]/span').click()
+time.sleep(2)
+nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys("Alan")
+time.sleep(2)
+nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(Keys.ENTER)
+time.sleep(2)
+nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/span/div/div/div/span').click()
