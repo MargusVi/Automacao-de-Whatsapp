@@ -6,12 +6,35 @@
 # Pyperclip -> permite dar ctrl c / ctrl v em mensagens
 # Webdriver-manager -> conversa com o selenium
 
+
+# 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+import time
+from selenium.webdriver.common.keys import Keys
+import pyperclip
 
 options = webdriver.ChromeOptions()
-options.add_experimental_option('detach', True)
+options.add_experimental_option('detach', True) # Usado para impedir que o navegador feche após carregar o Whatsapp
 service = Service(ChromeDriverManager().install())
 nav = webdriver.Chrome(options=options, service=service)
-nav.get("https://web.whatsapp.com")
+nav.get("https://web.whatsapp.com") # Abrir o Whatsapp no navegador
+
+time.sleep(40) # Esperar 2 minutos antes de começar a executar o restante do código
+
+mensagem = """Teste, teste, teste, teste, teste! Isso é um teste de mensagens automáticas! Não se assuste!"""
+
+lista_contatos = ["Marcos", "Alan Olinto", "Arteeeeeees", "Trabalho de artes", "Bolinhas de Papel O Filme", "Canal Mister Gast"]
+
+# Enviar a mensagem para meu número
+
+nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div[2]/button/div[2]/span').click() # Clicar na lupa
+nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys("Marcos") # Escrever "Marcos"
+nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div[2]/div[2]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
+pyperclip.copy(mensagem) # Copiar a mensagem usando o pyperclip
+nav.find_element('xpath', '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p').send_keys(Keys.CONTROL + 'v') # Colar a mensagem copiada no navegador
+nav.find_element('xpath', '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p').send_keys(Keys.ENTER) # Apertar enter
+
+
+# Encaminhar a mensagem para a minha lista de contatos
