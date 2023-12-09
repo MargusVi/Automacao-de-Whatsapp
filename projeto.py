@@ -61,7 +61,6 @@ for i in range(qtde_blocos): # Encaminha as mensagens para cada um dos blocos cr
         texto = item.text.replace("\n", "")
         if mensagem in texto:
             elemento = item
-            break
 
     ActionChains(nav).move_to_element(elemento).perform() # Coloca o mouse sobre a mensagem
     elemento.find_element('class name', '_3u9t-').click() # Clicar na setinha da mensagem
